@@ -1,9 +1,9 @@
 import React from 'react'
 
-function LanguageSelector() {
+function LanguageSelector({hasAccess}:{hasAccess:Boolean}) {
   return (
     <div>
-      
+      Language selector
     </div>
   )
 }

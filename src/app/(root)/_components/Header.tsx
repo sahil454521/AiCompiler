@@ -1,3 +1,4 @@
+
 import { currentUser } from "@clerk/nextjs/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
@@ -75,7 +76,7 @@ async function Header() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
             <ThemeSelector/>
-            <LanguageSelector  />
+            <LanguageSelector hasAccess={Boolean(convexUser?.isPro)}   />
           </div>
 
           {!convexUser?.isPro && (
