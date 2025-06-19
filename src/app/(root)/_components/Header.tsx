@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
 import Link from "next/link";
-import { Blocks, Code2, Sparkles } from "lucide-react";
+import { Blocks, CircleArrowDown, Code2, MoonStarIcon, Sparkles } from "lucide-react";
 import { SignedIn } from "@clerk/nextjs";
 import ThemeSelector from "./ThemeSelector";
 import LanguageSelector from "./LanguageSelector";
@@ -38,12 +38,12 @@ async function Header() {
               className="relative bg-gradient-to-br from-[#1a1a2e] to-[#0a0a0f] p-2 rounded-xl ring-1
               ring-white/10 group-hover:ring-white/20 transition-all"
             >
-              <Blocks className="size-6 text-blue-400 transform -rotate-6 group-hover:rotate-0 transition-transform duration-500" />
+              <MoonStarIcon className="size-6 text-blue-400 transform -rotate-6 group-hover:rotate-0 transition-transform duration-500" />
             </div>
 
             <div className="flex flex-col">
               <span className="block text-lg font-semibold bg-gradient-to-r from-blue-400 via-blue-300 to-purple-400 text-transparent bg-clip-text">
-                CodeCraft
+                NeuraCraft
               </span>
               <span className="block text-xs text-blue-400/60 font-medium">
                 Interactive Code Editor
@@ -94,7 +94,7 @@ async function Header() {
           )}
 
           <SignedIn>
-            <RunButton />
+            <RunButton/>
           </SignedIn>
 
           <div className="pl-3 border-l border-gray-800">

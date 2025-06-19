@@ -64,7 +64,7 @@ function EditorPanel() {
           <div className="flex items-center gap-3">
             {/* Font Size Slider */}
             <div className="flex items-center gap-3 px-3 py-2 bg-[#1e1e2e] rounded-lg ring-1 ring-white/5">
-              <TypeIcon className="size-4 text-blue-400" />
+              <TypeIcon className="size-4 text-gray-400" />
               <div className="flex items-center gap-3">
                 <input
                   type="range"
@@ -72,10 +72,9 @@ function EditorPanel() {
                   max="24"
                   value={fontSize}
                   onChange={(e) => handleFontSizeChange(parseInt(e.target.value))}
-                  className="w-20 h-1 bg-blue rounded-lg cursor-pointer"
-                  title="Font size slider"
+                  className="w-20 h-1 bg-gray-600 rounded-lg cursor-pointer"
                 />
-                <span className="text-sm font-medium text-blue-400 min-w-[2rem] text-center">
+                <span className="text-sm font-medium text-gray-400 min-w-[2rem] text-center">
                   {fontSize}
                 </span>
               </div>
