@@ -5,11 +5,13 @@ import { X } from 'lucide-react';
 import { createSnippet } from './snippets';
 import { toast } from 'react-hot-toast';
 
+import { api } from '../convex/_generated/api';
+
 function ShareSnippetDialog({onClose}: {onClose:() => void}) {
 
 const [title,setTitle] = useState("");
 const [isSharing,setIsSharing] = useState(false);
-const {language,getcode} = useCodeEditorStore();
+const {language,getCode} = useCodeEditorStore();
 const createSnippetMutation = useMutation(api.snippets.createSnippet);
 
 const handleshare = async (e: React.FormEvent) => {
@@ -18,7 +20,7 @@ const handleshare = async (e: React.FormEvent) => {
     setIsSharing(true);
 
     try {
-        const code = getcode();
+        const code = getCode();
 
         await createSnippetMutation({ title, language, code });
         onClose();
