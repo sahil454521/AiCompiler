@@ -35,7 +35,7 @@ function ShareSnippetDialog({ onClose }: { onClose: () => void }) {
       <div className="bg-[#1e1e2e] rounded-lg p-6 w-full max-w-md">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-white">Share Snippet</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-300">
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-300" title="Close dialog" aria-label="Close dialog">
             <X className="w-5 h-5" />
           </button>
         </div>

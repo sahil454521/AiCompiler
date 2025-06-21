@@ -1,3 +1,5 @@
+import styles from './SnippetsPageSkeleton.module.css';
+
 const CardSkeleton = () => (
   <div className="relative group">
     <div className="bg-[#1e1e2e]/80 rounded-xl border border-[#313244]/50 overflow-hidden h-[280px]">
@@ -54,18 +56,14 @@ export default function SnippetsPageSkeleton() {
           <div className="relative">
             <div className="w-full h-14 bg-[#1e1e2e]/80 rounded-xl border border-[#313244] animate-pulse" />
           </div>
-
-          {/* Language filters */}
-          <div className="flex flex-wrap gap-2">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="w-24 h-8 bg-gray-800 rounded-lg animate-pulse"
-                style={{
-                  animationDelay: `${i * 100}ms`,
-                }}
-              />
-            ))}
+            <div className="flex flex-wrap gap-2">
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-24 h-8 bg-gray-800 rounded-lg animate-pulse animation-delay-${i}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -78,6 +76,6 @@ export default function SnippetsPageSkeleton() {
           ))}
         </div>
       </div>
-    </div>
+    
   );
 }

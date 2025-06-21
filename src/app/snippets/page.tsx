@@ -7,7 +7,7 @@ import SnippetsPageSkeleton from "./_components/SnippetsPageSkeleton";
 import NavigationHeader from "@/Components/provider/NavigationHeader";
 import { AnimatePresence, motion } from "framer-motion";
 import { BookOpen, Code, Grid, Layers, Search, Tag, X } from "lucide-react";
-import SnippetCard from "./_components/SnippetsCard";
+import SnippetCard from "./_components/SnippetCard";
 
 function SnippetsPage() {
   const snippets = useQuery(api.snippets.getSnippets);
@@ -143,6 +143,8 @@ function SnippetsPage() {
                       ? "bg-blue-500/20 text-blue-400"
                       : "text-gray-400 hover:text-gray-300 hover:bg-[#262637]"
                   }`}
+                  title="Grid view"
+                  aria-label="Grid view"
                 >
                   <Grid className="w-4 h-4" />
                 </button>
@@ -153,6 +155,8 @@ function SnippetsPage() {
                       ? "bg-blue-500/20 text-blue-400"
                       : "text-gray-400 hover:text-gray-300 hover:bg-[#262637]"
                   }`}
+                  title="List view"
+                  aria-label="List view"
                 >
                   <Layers className="w-4 h-4" />
                 </button>
