@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../../../convex/_generated/api";
 import Link from "next/link";
-import { Blocks, CircleArrowDown, Code2, MoonStarIcon, Sparkles } from "lucide-react";
+import {  Code2, MoonStarIcon, Sparkles } from "lucide-react";
 import { SignedIn } from "@clerk/nextjs";
 import ThemeSelector from "./ThemeSelector";
 import LanguageSelector from "./LanguageSelector";
@@ -76,7 +76,7 @@ async function Header() {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
             <ThemeSelector/>
-            <LanguageSelector hasAccess={Boolean(convexUser?.isPro)}   />
+            <LanguageSelector   />
           </div>
 
           {!convexUser?.isPro && (

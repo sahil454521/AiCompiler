@@ -6,6 +6,7 @@ import { api } from "../../../../convex/_generated/api";
 import { Search, User, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function UserSearch() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -96,7 +97,7 @@ export default function UserSearch() {
                   >
                     <div className="flex-shrink-0 mr-3">
                       {user.imageUrl ? (
-                        <img
+                        <Image
                           src={user.imageUrl}
                           alt={user.username || "User"}
                           className="h-10 w-10 rounded-full object-cover border border-[#313244]"

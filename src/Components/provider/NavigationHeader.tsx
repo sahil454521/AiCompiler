@@ -1,6 +1,6 @@
 import HeaderProfileBtn from "@/app/(root)/_components/HeaderProfileBtn";
 import { SignedOut } from "@clerk/nextjs";
-import { Blocks, Code2, MoonStar, Sparkles } from "lucide-react";
+import {  Code2, MoonStar, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 function NavigationHeader() {

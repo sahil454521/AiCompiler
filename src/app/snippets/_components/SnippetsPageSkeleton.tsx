@@ -1,4 +1,3 @@
-import styles from './SnippetsPageSkeleton.module.css';
 
 const CardSkeleton = () => (
   <div className="relative group">
