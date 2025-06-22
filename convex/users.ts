@@ -67,3 +67,47 @@ export const upgradeToPro = mutation({
     return { success: true };
   },
 });
+
+// Add this new query for getting a user by email
+export const getUserByEmail = query({
+  args: { email: v.string() },
+  handler: async (ctx, args) => {
+    if (!args.email) return null;
+
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("email"), args.email))
+      .first();
+
+    if (!user) return null;
+
+    return user;
+  },
+});
+
+// Modify the getAllUsers to support filtering by email
+export const getAllUsers = query({
+  args: {
+    emailSearch: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    let usersQuery = ctx.db.query("users");
+
+    // If search term is provided, filter by email
+    if (args.emailSearch) {
+      usersQuery = usersQuery.filter((q) =>
+        q.eq(q.field("email"), args.emailSearch)
+      );
+    }
+
+    const users = await usersQuery.collect();
+
+    return users.map((user) => ({
+      _id: user._id,
+      username: user.name || user.userId, // Fallback to userId if name isn't available
+      email: user.email,
+      isPro: user.isPro || false,
+      // Don't include sensitive fields
+    }));
+  },
+});
