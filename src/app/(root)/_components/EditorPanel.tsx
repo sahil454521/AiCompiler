@@ -10,6 +10,7 @@ import { useClerk } from "@clerk/nextjs";
 import { EditorPanelSkeleton } from "./EditorPanelSkeleton";
 import useMounted from "@/hooks/useMounted";
 import ShareSnippetDialog from "./ShareSnippetDialog";
+import type { editor as MonacoEditor } from "monaco-editor";
 
 export default function EditorPanel() {
   const clerk = useClerk();
@@ -18,8 +19,8 @@ export default function EditorPanel() {
   const [code, setCode] = useState("");
   const [suggestion, setSuggestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [decorationIds, setDecorationIds] = useState<string[]>([]);
-  const editorRef = useRef<any>(null);
+  const [ ,setDecorationIds] = useState<string[]>([]);
+  const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<any>(null);
   const suggestionRef = useRef<string>("");
 
@@ -62,7 +63,9 @@ export default function EditorPanel() {
     if (!code || code.length < 5) {
       setSuggestion("");
       if (editorRef.current) {
-        setDecorationIds((ids) => editorRef.current.deltaDecorations(ids, []));
+        if (editorRef.current) {
+          setDecorationIds((ids) => editorRef.current!.deltaDecorations(ids, []));
+        }
       }
       return;
     }
@@ -79,7 +82,9 @@ export default function EditorPanel() {
       } catch {
         setSuggestion("");
         if (editorRef.current) {
-          setDecorationIds((ids) => editorRef.current.deltaDecorations(ids, []));
+          if (editorRef.current) {
+            setDecorationIds((ids) => editorRef.current!.deltaDecorations(ids, []));
+          }
         }
       } finally {
         setIsLoading(false);
@@ -89,19 +94,20 @@ export default function EditorPanel() {
   }, [code]);
 
   // Monaco theme and instance
-  const handleBeforeMount = (monaco: any) => {
+  const handleBeforeMount = (monaco: typeof import("monaco-editor")) => {
     defineMonacoThemes(monaco);
     monacoRef.current = monaco;
   };
 
   // Add Tab command ONCE on mount
-  const handleEditorMount = (editor: any, monaco: any) => {
+  const handleEditorMount = (editor: MonacoEditor.IStandaloneCodeEditor, monaco: typeof import("monaco-editor")) => {
     setEditor(editor);
     editorRef.current = editor;
     editor.addCommand(monaco.KeyCode.Tab, () => {
       const currentSuggestion = suggestionRef.current;
       if (currentSuggestion) {
         const pos = editor.getPosition();
+        if (!pos) return;
         editor.executeEdits("", [
           {
             range: new monaco.Range(
@@ -144,9 +150,9 @@ export default function EditorPanel() {
             position.column
           ),
           options: {
+            afterContentClassName: "monaco-ghost-text",
             after: {
-              contentText: singleLineSuggestion,
-              inlineClassName: "monaco-ghost-text",
+              content: singleLineSuggestion,
             },
           },
         },
