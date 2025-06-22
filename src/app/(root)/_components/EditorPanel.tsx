@@ -21,6 +21,7 @@ export default function EditorPanel() {
   const [decorationIds, setDecorationIds] = useState<string[]>([]);
   const editorRef = useRef<any>(null);
   const monacoRef = useRef<any>(null);
+  const suggestionRef = useRef<string>("");
 
   const mounted = useMounted();
 
@@ -73,10 +74,7 @@ export default function EditorPanel() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code }),
         });
-        
-
         const { suggestion } = await res.json();
-        console.log("💡 Received suggestion:", suggestion);
         setSuggestion(suggestion || "");
       } catch {
         setSuggestion("");
@@ -100,9 +98,9 @@ export default function EditorPanel() {
   const handleEditorMount = (editor: any, monaco: any) => {
     setEditor(editor);
     editorRef.current = editor;
-    // Add Tab command only once
     editor.addCommand(monaco.KeyCode.Tab, () => {
-      if (suggestion) {
+      const currentSuggestion = suggestionRef.current;
+      if (currentSuggestion) {
         const pos = editor.getPosition();
         editor.executeEdits("", [
           {
@@ -112,10 +110,10 @@ export default function EditorPanel() {
               pos.lineNumber,
               pos.column
             ),
-            text: suggestion,
+            text: currentSuggestion,
           },
         ]);
-        const newValue = code + suggestion;
+        const newValue = editor.getValue();
         setCode(newValue);
         setSuggestion("");
         setDecorationIds((ids) => editor.deltaDecorations(ids, []));
@@ -160,100 +158,29 @@ export default function EditorPanel() {
     return () => disposable.dispose();
   }, [suggestion, code]);
 
-  // Handle Tab key to accept suggestion
+  // Keep ref in sync with state
   useEffect(() => {
-    const editor = editorRef.current;
-    const monaco = monacoRef.current;
-    if (!editor || !monaco) return;
-    const commandId = editor.addCommand(
-      monaco.KeyCode.Tab,
-      () => {
-        if (suggestion) {
-          const pos = editor.getPosition();
-          editor.executeEdits("", [
-            {
-              range: new monaco.Range(
-                pos.lineNumber,
-                pos.column,
-                pos.lineNumber,
-                pos.column
-              ),
-              text: suggestion,
-            },
-          ]);
-          setCode(code + suggestion);
-          setSuggestion("");
-          setDecorationIds((ids) => editor.deltaDecorations(ids, []));
-        }
-      }
-    );
-    // No dispose needed
-  }, [suggestion, code]);
-
-  // Render ghost text (inline suggestion)
-  function renderGhostText() {
-    if (!suggestion) return null;
-    return <span className="text-gray-500 opacity-60">{suggestion}</span>;
-  }
-
-  const renderSuggestion = () => {
-    if (!suggestion) return null;
-
-    return (
-      <div className="mt-4 p-3 bg-gray-800/50 rounded-lg border border-gray-700/50">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-400">Suggested Framework/Library:</span>
-          {isLoading && <span className="text-xs text-blue-400">Analyzing code...</span>}
-        </div>
-        {suggestion && (
-          <div className="mt-1 text-md font-medium text-blue-400">{suggestion}</div>
-        )}
-      </div>
-    );
-  };
-
-  useEffect(() => {
-    if (!editorRef.current) return;
-    const editor = editorRef.current;
-    const updateDecoration = () => {
-      if (!suggestion) {
-        setDecorationIds((ids) => editor.deltaDecorations(ids, []));
-        return;
-      }
-      const position = editor.getPosition();
-      const singleLineSuggestion = suggestion.split('\n')[0]; // ✅ take first line only
-
-const decorations = [
-  {
-    range: new (monacoRef.current as any).Range(
-      position.lineNumber,
-      position.column,
-      position.lineNumber,
-      position.column
-    ),
-    options: {
-      after: {
-        contentText: singleLineSuggestion,
-        inlineClassName: "monaco-ghost-text",
-      },
-    },
-  },
-];
-
-      setDecorationIds((ids) => editor.deltaDecorations(ids, decorations));
-    };
-    updateDecoration();
-    const disposable = editor.onDidChangeCursorPosition(updateDecoration);
-    return () => disposable.dispose();
-  }, [suggestion, code]);
+    suggestionRef.current = suggestion;
+  }, [suggestion]);
 
   if (!mounted) return null;
 
   return (
     <div className="relative">
       <div className="relative bg-[#12121a]/90 backdrop-blur rounded-xl border border-white/[0.05] p-6">
-        {/* Suggestion always at the top */}
-        {renderSuggestion()}
+        {/* Suggestion Card */}
+        {(suggestion || isLoading) && (
+          <div className="mb-4 p-3 bg-gray-900/80 rounded-lg border border-blue-700/40 shadow flex items-center justify-between">
+            <div>
+              <span className="text-sm text-blue-300 font-semibold">Suggestion:</span>
+              <span className="ml-2 text-blue-400 font-mono">{suggestion || "..."}</span>
+            </div>
+            {isLoading && (
+              <span className="text-xs text-blue-400 animate-pulse ml-4">Analyzing...</span>
+            )}
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -309,7 +236,7 @@ const decorations = [
           </div>
         </div>
 
-        {/* Editor  */}
+        {/* Editor */}
         <div className="relative group rounded-xl overflow-hidden ring-1 ring-white/[0.05]">
           {clerk.loaded && (
             <Editor
@@ -343,17 +270,10 @@ const decorations = [
               }}
             />
           )}
-
           {!clerk.loaded && <EditorPanelSkeleton />}
         </div>
       </div>
       {isShareDialogOpen && <ShareSnippetDialog onClose={() => setIsShareDialogOpen(false)} />}
-  
-      {isLoading && (
-        <div className="absolute top-2 right-4 text-xs text-blue-400 animate-pulse">
-          Suggesting...
-        </div>
-      )}
       <style>
         {`
           .monaco-ghost-text {
