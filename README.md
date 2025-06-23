@@ -1,81 +1,113 @@
-# AiCompiler
+# 🧠 AiCompiler — Your AI-Powered Code Suggestion IDE
 
-AiCompiler is a SaaS-based online IDE that leverages artificial intelligence to provide intelligent code auto-completion and suggestions. Through seamless integration of a custom-trained AI model, AiCompiler helps developers write code faster and more efficiently with smart, context-aware completions—right in the browser.
+> An intelligent, VS Code–style online code editor that suggests machine learning code snippets in real-time using a custom-trained ML model.
 
-## Features
+---
 
-- **SaaS Online IDE:** Access your coding environment from anywhere, at any time.
-- **AI-Powered Autocompletion:** Get intelligent code suggestions powered by a proprietary trained model.
-- **Multi-Language Support:** Built with TypeScript, JavaScript, and Jupyter Notebook, supporting a variety of coding needs.
-- **Interactive Notebooks:** Jupyter Notebook integration for experimentation, prototyping, and data analysis.
-- **Modern, Responsive UI:** Minimal CSS for a clean, user-friendly experience.
+## 🚀 Live Demo
 
-## Getting Started
+**Frontend**: [https://your-ai-compiler.vercel.app](https://your-ai-compiler.vercel.app)  
+**ML API (FastAPI)**: [https://ml-code-suggestion-api.onrender.com/docs](https://ml-code-suggestion-api.onrender.com/docs)
 
-### Prerequisites
+---
 
-- [Node.js](https://nodejs.org/) (version 14+ recommended)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) for dependency management
+## 🛠 Tech Stack
 
-### Installation
+| Layer | Tech Used |
+|-------|-----------|
+| ✨ Frontend | React (Next.js), Monaco Editor, Framer Motion |
+| 🧠 Backend API | Node.js |
+| 🧪 Machine Learning API | FastAPI, scikit-learn, Render |
+| 🔐 Auth | Clerk |
+| 📦 DB | Convex |
+| ☁️ Deployment | Vercel (frontend), Render (ML API) |
 
-Clone the repository:
+---
+
+## 🧠 What It Does
+
+- Live Monaco editor with syntax highlighting
+- Real-time code analysis via a FastAPI ML model
+- Predicts the most likely ML framework/library (e.g. `LinearRegression`, `XGBoost`)
+- Returns a relevant code snippet (e.g. `.fit(X, y)`) as **inline ghost text**
+- Supports `Tab` to auto-insert suggestions like VS Code
+
+---
+
+## 🎯 Current Capabilities
+
+✅ Suggests ML code in Python for:
+
+- Scikit-learn (Linear Regression, Random Forest, etc.)
+- TensorFlow / Keras
+- PyTorch
+- XGBoost
+
+⚠️ **Currently limited to single-line code suggestions for Python ML use cases.**
+
+---
+
+## 🔮 Coming Soon
+
+- Multi-line completions with full context
+- Support for JavaScript, C++, TypeScript, etc.
+- Auto `pip install` prompts
+- Fine-tuned code suggestion based on user style
+
+---
+
+## 📁 Project Structure
+
+/ ├── frontend/                 # React + Monaco Editor ├── pages/api/suggest.ts     # Node.js API route to ML model ├── utils/                   # Editor state/store logic ├── code_suggestion_api/     # FastAPI ML microservice (deployed on Render) │   ├── main.py │   ├── model_suggestion_classifier.pkl │   ├── label_encoder.pkl │   └── requirements.txt
+
+---
+
+## 📦 Setup Instructions
+
+### 1. ML Suggestion API (Python)
+
 ```bash
-git clone https://github.com/sahil454521/AiCompiler.git
-cd AiCompiler
-```
+cd code_suggestion_api
+pip install -r requirements.txt
+uvicorn main:app --reload
 
-Install dependencies:
-```bash
+API will run on http://localhost:8000/suggest
+
+2. Frontend (Next.js)
+
 npm install
-# or
-yarn install
-```
-
-### Running the Application
-
-To start the development server:
-```bash
 npm run dev
-# or
-yarn dev
-```
 
-To build the project for production:
-```bash
-npm run build
-# or
-yarn build
-```
+Then open http://localhost:3000
 
-### Using Jupyter Notebooks
 
-For notebook features, ensure you have [Jupyter](https://jupyter.org/) installed:
-```bash
-pip install notebook
-jupyter notebook
-```
+---
 
-Then open the `.ipynb` files available in the `/notebooks` directory for AI experiments and prototyping.
+🤝 Contributing
 
-## Folder Structure
+Got ideas to improve suggestion logic or support more languages?
+PRs and issues are welcome! Let's make this the future of intelligent coding.
 
-```
-/src              # Main TypeScript/JavaScript source code
-/notebooks        # Jupyter Notebook files
-/public           # Static assets
-/styles           # CSS files
-```
 
-## Contributing
+---
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+📜 License
 
-## License
+MIT License — feel free to fork, clone, and build upon this.
 
-This project is licensed under the [IIT Ghuwati](LICENSE).
 
-## Author
+---
 
-- [sahil454521](https://github.com/sahil454521)
+💬 Connect With Me
 
+🔗 LinkedIn – https://www.linkedin.com/in/sahil-pathak21
+
+📫 DM me to collaborate on dev tools, AI assistants, or research projects!
+
+---
+
+### ✅ Next Step
+
+Let me know your:
+- GitHub repo name or slug so I can update the links
+- Any demo link if you'd like me to embed a screenshot/gif preview
